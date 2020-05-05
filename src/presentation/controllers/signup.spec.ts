@@ -36,7 +36,8 @@ describe('', () => {
     const httpRequest = {
       body: {
         email: 'any_email@mail.com',
-        password: 'any_password'
+        password: 'any_password',
+        passwordConfirmation: 'any_password'
       }
     }
 
@@ -51,7 +52,8 @@ describe('', () => {
     const httpRequest = {
       body: {
         name: 'any_name',
-        password: 'any_password'
+        password: 'any_password',
+        passwordConfirmation: 'any_password'
       }
     }
 
@@ -66,7 +68,8 @@ describe('', () => {
     const httpRequest = {
       body: {
         name: 'any_name',
-        email: 'any_email@gmail.com'
+        email: 'any_email@gmail.com',
+        passwordConfirmation: 'any_password'
       }
     }
 
@@ -76,6 +79,22 @@ describe('', () => {
     expect(httpResponse.body).toEqual(new MissingParamError('password'))
   })
 
+  test('Should return 400 if no passwordConfirmation is provided', () => {
+    const { sut } = makeSut()
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        email: 'any_email@gmail.com',
+        password: 'any_password'
+      }
+    }
+
+    const httpResponse = sut.handle(httpRequest)
+
+    expect(httpResponse.statusCode).toBe(400)
+    expect(httpResponse.body).toEqual(new MissingParamError('passwordConfirmation'))
+  })
+
   test('Should return 400 if an invalid email is provided', () => {
     const { sut, emailValidatorStub } = makeSut()
     jest.spyOn(emailValidatorStub, 'isValid').mockReturnValueOnce(false)
@@ -83,7 +102,8 @@ describe('', () => {
       body: {
         name: 'any_name',
         email: 'shu@shu.com',
-        password: 'any_password'
+        password: 'any_password',
+        passwordConfirmation: 'any_password'
       }
     }
 
@@ -101,7 +121,8 @@ describe('', () => {
       body: {
         name: 'any_name',
         email: email,
-        password: 'any_password'
+        password: 'any_password',
+        passwordConfirmation: 'any_password'
       }
     }
 
@@ -117,7 +138,8 @@ describe('', () => {
       body: {
         name: 'any_name',
         email: 'shu@shu.com',
-        password: 'any_password'
+        password: 'any_password',
+        passwordConfirmation: 'any_password'
       }
     }
 
