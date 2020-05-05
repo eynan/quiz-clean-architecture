@@ -31,7 +31,7 @@ describe('', () => {
     expect(httpResponse.body).toEqual(new Error('Missing param: email'))
   })
 
-  test('Should return 400 if no email is provided', () => {
+  test('Should return 400 if no password is provided', () => {
     const sut = new SignUpController()
     const httpRequest = {
       body: {
