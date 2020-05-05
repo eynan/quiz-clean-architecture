@@ -29,16 +29,19 @@ const makeEmailValidatorWithError = (): EmailValidator => {
   }
   return new EmailValidadorStub()
 }
+const fullBody = {
+  name: 'any_name',
+  email: 'shu@shu.com',
+  password: 'any_password',
+  passwordConfirmation: 'any_password'
+}
 
 describe('', () => {
   test('Should return 400 if no name is provided', () => {
     const { sut } = makeSut()
+    const { name, ...bodyWithouthName } = fullBody
     const httpRequest = {
-      body: {
-        email: 'any_email@mail.com',
-        password: 'any_password',
-        passwordConfirmation: 'any_password'
-      }
+      body: bodyWithouthName
     }
 
     const httpResponse = sut.handle(httpRequest)
@@ -49,12 +52,9 @@ describe('', () => {
 
   test('Should return 400 if no email is provided', () => {
     const { sut } = makeSut()
+    const { email, ...bodyWithouthEmail } = fullBody
     const httpRequest = {
-      body: {
-        name: 'any_name',
-        password: 'any_password',
-        passwordConfirmation: 'any_password'
-      }
+      body: bodyWithouthEmail
     }
 
     const httpResponse = sut.handle(httpRequest)
@@ -65,12 +65,9 @@ describe('', () => {
 
   test('Should return 400 if no password is provided', () => {
     const { sut } = makeSut()
+    const { password, ...bodyWithouthPassword } = fullBody
     const httpRequest = {
-      body: {
-        name: 'any_name',
-        email: 'any_email@gmail.com',
-        passwordConfirmation: 'any_password'
-      }
+      body: bodyWithouthPassword
     }
 
     const httpResponse = sut.handle(httpRequest)
@@ -81,12 +78,9 @@ describe('', () => {
 
   test('Should return 400 if no passwordConfirmation is provided', () => {
     const { sut } = makeSut()
+    const { passwordConfirmation, ...bodyWithouthpasswordConfirmation } = fullBody
     const httpRequest = {
-      body: {
-        name: 'any_name',
-        email: 'any_email@gmail.com',
-        password: 'any_password'
-      }
+      body: bodyWithouthpasswordConfirmation
     }
 
     const httpResponse = sut.handle(httpRequest)
@@ -99,12 +93,7 @@ describe('', () => {
     const { sut, emailValidatorStub } = makeSut()
     jest.spyOn(emailValidatorStub, 'isValid').mockReturnValueOnce(false)
     const httpRequest = {
-      body: {
-        name: 'any_name',
-        email: 'shu@shu.com',
-        password: 'any_password',
-        passwordConfirmation: 'any_password'
-      }
+      body: { ...fullBody, email: 'shu' }
     }
 
     const httpResponse = sut.handle(httpRequest)
@@ -118,12 +107,7 @@ describe('', () => {
     const isValidSpy = jest.spyOn(emailValidatorStub, 'isValid')
     const email = 'email@teste.com'
     const httpRequest = {
-      body: {
-        name: 'any_name',
-        email: email,
-        password: 'any_password',
-        passwordConfirmation: 'any_password'
-      }
+      body: { ...fullBody, email }
     }
 
     sut.handle(httpRequest)
@@ -135,12 +119,7 @@ describe('', () => {
     const emailValidatorStub = makeEmailValidatorWithError()
     const sut = new SignUpController(emailValidatorStub)
     const httpRequest = {
-      body: {
-        name: 'any_name',
-        email: 'shu@shu.com',
-        password: 'any_password',
-        passwordConfirmation: 'any_password'
-      }
+      body: fullBody
     }
 
     const httpResponse = sut.handle(httpRequest)
