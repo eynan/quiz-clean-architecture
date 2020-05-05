@@ -21,6 +21,15 @@ const makeSut = (): SutTypes => {
   }
 }
 
+const makeEmailValidatorWithError = (): EmailValidator => {
+  class EmailValidadorStub implements EmailValidator {
+    isValid (email: string): boolean {
+      throw new Error()
+    }
+  }
+  return new EmailValidadorStub()
+}
+
 describe('', () => {
   test('Should return 400 if no name is provided', () => {
     const { sut } = makeSut()
@@ -102,12 +111,7 @@ describe('', () => {
   })
 
   test('Should return 500 if email validator throws', () => {
-    class EmailValidadorStub implements EmailValidator {
-      isValid (email: string): boolean {
-        throw new Error()
-      }
-    }
-    const emailValidatorStub = new EmailValidadorStub()
+    const emailValidatorStub = makeEmailValidatorWithError()
     const sut = new SignUpController(emailValidatorStub)
     const httpRequest = {
       body: {
